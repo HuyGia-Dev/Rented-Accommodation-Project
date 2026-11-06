@@ -7,18 +7,42 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+server/node_modules
+
+# Production builds
 dist
 dist-ssr
+
+# Environment variables & Secrets
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
 *.local
 
-# Editor directories and files
+# Server uploads & runtime files
+server/uploads/*
+!server/uploads/.gitkeep
+uploads/
+
+# Editor & OS files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
+desktop.ini
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary & lock files (Office, tmp)
+~$*
+*.tmp
+*.bak
