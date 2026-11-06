@@ -23,6 +23,7 @@ function authenticate(req, res, next) {
       id: decoded.id,
       email: decoded.email,
       role: decoded.role,
+      kyc_status: decoded.kyc_status,
     };
 
     next();
@@ -47,6 +48,7 @@ function optionalAuth(req, res, next) {
         id: decoded.id,
         email: decoded.email,
         role: decoded.role,
+        kyc_status: decoded.kyc_status,
       };
     }
   } catch (error) {
@@ -77,7 +79,7 @@ function authorize(...roles) {
  */
 function generateAccessToken(user) {
   return jwt.sign(
-    { id: user.id, email: user.email, role: user.role },
+    { id: user.id, email: user.email, role: user.role, kyc_status: user.kyc_status },
     JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );

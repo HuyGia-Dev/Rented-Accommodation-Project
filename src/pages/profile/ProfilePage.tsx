@@ -12,7 +12,7 @@ import { alertQuick, confirmAsync } from '../../stores/modalStore';
 export default function ProfilePage() {
   const navigate = useNavigate();
   const { user, updateProfile } = useAuthStore();
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState(() => new URLSearchParams(window.location.search).get('tab') || 'profile');
 
   if (!user) {
     return (

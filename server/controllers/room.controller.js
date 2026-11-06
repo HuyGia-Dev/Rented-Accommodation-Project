@@ -254,8 +254,13 @@ async function createRoom(req, res, next) {
   try {
     await conn.beginTransaction();
 
-    if (req.user.role === 'landlord' && req.user.kyc_status !== 'approved') {
-      return res.status(403).json({ message: 'Bạn cần được xác thực danh tính (KYC) trước khi đăng phòng' });
+    if (req.user.role === 'landlord') {
+      const [userRows] = await conn.execute('SELECT kyc_status FROM users WHERE id = ?', [req.user.id]);
+      const kycStatus = userRows[0]?.kyc_status || req.user.kyc_status;
+      if (kycStatus !== 'approved') {
+        await conn.rollback();
+        return res.status(403).json({ message: 'Bạn cần được xác thực danh tính (KYC) trước khi đăng phòng' });
+      }
     }
 
     const {
@@ -287,7 +292,8 @@ async function createRoom(req, res, next) {
     );
 
     // Insert amenities
-    for (const amenityId of amenityIds) {
+    const selectedAmenities = (amenityIds && amenityIds.length > 0) ? amenityIds : (req.body.amenities || []);
+    for (const amenityId of selectedAmenities) {
       await conn.execute(
         'INSERT INTO room_amenities (room_id, amenity_id) VALUES (?, ?)',
         [roomId, amenityId]
@@ -382,9 +388,10 @@ async function updateRoom(req, res, next) {
     }
 
     // Update amenities
-    if (amenityIds !== undefined) {
+    const incomingAmenities = amenityIds !== undefined ? amenityIds : req.body.amenities;
+    if (incomingAmenities !== undefined) {
       await conn.execute('DELETE FROM room_amenities WHERE room_id = ?', [req.params.id]);
-      for (const amenityId of amenityIds) {
+      for (const amenityId of incomingAmenities) {
         await conn.execute(
           'INSERT INTO room_amenities (room_id, amenity_id) VALUES (?, ?)',
           [req.params.id, amenityId]

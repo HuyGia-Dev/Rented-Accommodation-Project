@@ -51,25 +51,105 @@ export default function PostRoomPage() {
 
   if (!user || user.role !== 'landlord') {
     return (
-      <div style={{ paddingTop: '120px', textAlign: 'center', minHeight: '60vh' }}>
-        <h2>Bạn cần đăng nhập với tài khoản Chủ trọ</h2>
-        <button className="btn btn-primary" style={{ marginTop: '16px' }} onClick={() => navigate('/login')}>Đăng nhập</button>
+      <div style={{
+        paddingTop: '68px',
+        minHeight: '80vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'var(--bg-secondary)',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        paddingBottom: '60px',
+      }}>
+        <div style={{
+          maxWidth: '480px',
+          width: '100%',
+          background: 'var(--bg-card)',
+          padding: '40px 32px',
+          borderRadius: '20px',
+          boxShadow: 'var(--shadow-md)',
+          border: '1px solid var(--border-color)',
+          textAlign: 'center'
+        }}>
+          <h2>Bạn cần đăng nhập với tài khoản Chủ trọ</h2>
+          <button className="btn btn-primary" style={{ marginTop: '20px' }} onClick={() => navigate('/login')}>
+            Đăng nhập
+          </button>
+        </div>
       </div>
     );
   }
 
   if (user.kycStatus !== 'approved') {
     return (
-      <div style={{ paddingTop: '120px', textAlign: 'center', minHeight: '60vh', padding: '0 20px' }}>
-        <div style={{ maxWidth: '500px', margin: '0 auto', background: 'var(--bg-card)', padding: '40px', borderRadius: '16px', boxShadow: 'var(--shadow-md)' }}>
-          <Shield size={48} color="var(--warning-500)" style={{ margin: '0 auto 16px' }} />
-          <h2 style={{ marginBottom: '16px' }}>Yêu cầu xác thực danh tính (KYC)</h2>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+      <div style={{
+        paddingTop: '68px',
+        minHeight: 'calc(100vh - 68px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'var(--bg-secondary)',
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        paddingBottom: '60px',
+      }}>
+        <div style={{
+          maxWidth: '520px',
+          width: '100%',
+          background: 'var(--bg-card)',
+          padding: '44px 36px',
+          borderRadius: '24px',
+          boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04)',
+          border: '1px solid var(--border-color)',
+          textAlign: 'center',
+          animation: 'fadeIn 0.3s ease'
+        }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            background: 'rgba(245, 158, 11, 0.12)',
+            color: 'var(--warning-500)',
+            marginBottom: '20px'
+          }}>
+            <Shield size={40} />
+          </div>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '12px' }}>
+            Yêu cầu xác thực danh tính (KYC)
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '28px' }}>
             Để đảm bảo an toàn cho cộng đồng và tránh tình trạng phòng trọ ảo, hệ thống yêu cầu tất cả Chủ trọ phải tải lên CCCD/GPLX để xác minh danh tính trước khi được phép đăng phòng.
           </p>
-          <button className="btn btn-primary" onClick={() => navigate('/profile')}>
-            Đến trang Xác thực ngay
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <button
+              className="btn btn-primary"
+              style={{
+                width: '100%',
+                padding: '12px 24px',
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderRadius: '12px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+              onClick={() => navigate('/profile?tab=kyc')}
+            >
+              <span>Đến trang Xác thực ngay</span>
+            </button>
+            <button
+              className="btn btn-ghost"
+              style={{ width: '100%', borderRadius: '12px', color: 'var(--text-secondary)' }}
+              onClick={() => navigate(-1)}
+            >
+              Quay lại
+            </button>
+          </div>
         </div>
       </div>
     );
